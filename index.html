@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saudi Precise Time — High Precision Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <script>
+    try {
+      if (localStorage.getItem('saudiPreciseTime-privacy-v1') === '1') {
+        document.documentElement.classList.add('spt-privacy-ack');
+      }
+    } catch (e) {}
+  </script>
+  <div
+    id="privacyGate"
+    class="privacy-gate"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="privacyTitleEn"
+  >
+    <div class="privacy-gate__panel">
+      <div class="privacy-gate__col privacy-gate__col--en" lang="en">
+        <h2 id="privacyTitleEn" class="privacy-gate__title">Privacy Policy</h2>
+        <p class="privacy-gate__text">This website does not collect, store, or share any personal information from users.</p>
+        <p class="privacy-gate__text">No cookies, tracking systems, or personal data are stored.</p>
+        <button type="button" class="btn btn-primary privacy-gate__btn" id="privacyAckEn">Thanks!</button>
+      </div>
+      <div class="privacy-gate__divider" aria-hidden="true"></div>
+      <div class="privacy-gate__col privacy-gate__col--ar" lang="ar" dir="rtl">
+        <h2 id="privacyTitleAr" class="privacy-gate__title">سياسة الخصوصية</h2>
+        <p class="privacy-gate__text">هذا الموقع لا يقوم بجمع أو تخزين أو مشاركة أي معلومات شخصية من المستخدمين.</p>
+        <p class="privacy-gate__text">لا يتم استخدام ملفات تعريف الارتباط (Cookies) أو أي أنظمة تتبع، ولا يتم حفظ أي بيانات شخصية.</p>
+        <button type="button" class="btn btn-primary privacy-gate__btn" id="privacyAckAr">تطمنت، شكراً</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-subtle" aria-hidden="true"></div>
+
+  <main class="main">
+    <header class="hero">
+      <h1 class="site-title">
+        <span class="title-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7v5l3 2" stroke-linecap="round" />
+          </svg>
+        </span>
+        Saudi Precise Time
+      </h1>
+      <p class="tagline">Kingdom of Saudi Arabia — Asia/Riyadh (AST, UTC+3)</p>
+    </header>
+
+    <section class="clock-panel" aria-live="polite" aria-atomic="true">
+      <div class="format-toggle" role="group" aria-label="Time format selector">
+        <span class="format-label">Time Format</span>
+        <button type="button" class="format-btn is-active" id="mode24Btn" aria-pressed="true">24-hour</button>
+        <button type="button" class="format-btn" id="mode12Btn" aria-pressed="false">12-hour</button>
+      </div>
+      <div class="clock-ring">
+        <div class="clock-display" id="clockDisplay">
+          <div class="time-row">
+            <span class="label">Hour</span>
+            <span class="value" id="hourVal">—</span>
+          </div>
+          <div class="time-row">
+            <span class="label">Minute</span>
+            <span class="value" id="minuteVal">—</span>
+          </div>
+          <div class="time-row">
+            <span class="label">Second</span>
+            <span class="value" id="secondVal">—</span>
+          </div>
+          <div class="time-row sub">
+            <span class="label">Millisecond</span>
+            <span class="value value-precision" id="msVal">—</span>
+          </div>
+          <div class="time-row sub">
+            <span class="label">Microsecond</span>
+            <span class="value value-precision" id="microVal">—</span>
+          </div>
+          <div class="time-row sub">
+            <span class="label">Nanosecond</span>
+            <span class="value value-precision" id="nanoVal">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button type="button" class="btn btn-primary" id="saveMoment">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+              <path d="M17 21v-8H7v8M7 3v5h8" />
+            </svg>
+          </span>
+          Save This Moment
+        </button>
+        <button type="button" class="btn btn-ghost" id="copyCurrent">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" />
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+            </svg>
+          </span>
+          Copy current time
+        </button>
+        <button type="button" class="btn btn-danger-outline" id="clearMoments">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6" />
+            </svg>
+          </span>
+          Clear saved moments
+        </button>
+      </div>
+      <p class="toast" id="toast" role="status" hidden></p>
+    </section>
+
+    <section class="moments-section">
+      <h2 class="section-title">Captured moments</h2>
+      <ul class="moments-list" id="momentsList">
+        <li class="moments-empty" id="momentsEmpty">No moments recorded yet. Use “Save This Moment” to add an entry.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-credit">Created by Faris Al-Harbi</p>
+    <div class="footer-contact">
+      <p><strong>Contact</strong></p>
+      <p>Phone: <a href="tel:+966550790106">+966550790106</a></p>
+      <p>Email: <a href="mailto:faris.alhanayni@gmail.com">faris.alhanayni@gmail.com</a></p>
+      <p>LinkedIn: <a href="http://linkedin.com/in/faris106" target="_blank" rel="noopener noreferrer">linkedin.com/in/faris106</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
